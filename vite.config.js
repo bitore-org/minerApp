@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [],
   build: {
     minify: false,
-    outDir: "./dist",
+    outDir: "./docs",
   },
   worker: {
     format: "es",
