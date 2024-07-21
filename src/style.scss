@@ -1,0 +1,204 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+
+[data-bs-theme=dark] {
+    color-scheme: dark;
+    --bs-body-color: #adb5bd;
+    --bs-body-color-rgb: 173, 181, 189;
+    --bs-body-bg: #0a0a0a;
+    --bs-body-bg-rgb: 10, 10, 10;
+    --bs-emphasis-color: #fff;
+    --bs-emphasis-color-rgb: 255, 255, 255;
+    --bs-secondary-color: rgba(173, 181, 189, 0.75);
+    --bs-secondary-color-rgb: 173, 181, 189;
+    --bs-secondary-bg: #343a40;
+    --bs-secondary-bg-rgb: 52, 58, 64;
+    --bs-tertiary-color: rgba(173, 181, 189, 0.5);
+    --bs-tertiary-color-rgb: 173, 181, 189;
+    --bs-tertiary-bg: #2b3035;
+    --bs-tertiary-bg-rgb: 43, 48, 53;
+    --bs-primary-text-emphasis: #6ea8fe;
+    --bs-secondary-text-emphasis: #a7acb1;
+    --bs-success-text-emphasis: #75b798;
+    --bs-info-text-emphasis: #6edff6;
+    --bs-warning-text-emphasis: #ffda6a;
+    --bs-danger-text-emphasis: #ea868f;
+    --bs-light-text-emphasis: #f8f9fa;
+    --bs-dark-text-emphasis: #dee2e6;
+    --bs-primary-bg-subtle: #031633;
+    --bs-secondary-bg-subtle: #161719;
+    --bs-success-bg-subtle: #051b11;
+    --bs-info-bg-subtle: #032830;
+    --bs-warning-bg-subtle: #332701;
+    --bs-danger-bg-subtle: #2c0b0e;
+    --bs-light-bg-subtle: #343a40;
+    --bs-dark-bg-subtle: #1a1d20;
+    --bs-primary-border-subtle: #084298;
+    --bs-secondary-border-subtle: #41464b;
+    --bs-success-border-subtle: #0f5132;
+    --bs-info-border-subtle: #087990;
+    --bs-warning-border-subtle: #997404;
+    --bs-danger-border-subtle: #842029;
+    --bs-light-border-subtle: #495057;
+    --bs-dark-border-subtle: #343a40;
+    --bs-heading-color: inherit;
+    --bs-link-color: #6ea8fe;
+    --bs-link-hover-color: #8bb9fe;
+    --bs-link-color-rgb: 110, 168, 254;
+    --bs-link-hover-color-rgb: 139, 185, 254;
+    --bs-code-color: #e685b5;
+    --bs-border-color: #495057;
+    --bs-border-color-translucent: rgba(255, 255, 255, 0.15);
+    --bs-form-valid-color: #75b798;
+    --bs-form-valid-border-color: #75b798;
+    --bs-form-invalid-color: #ea868f;
+
+}
+
+
+@font-face {
+    font-family: 'Clock';
+    src: url('../clock.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.navbar {
+    --bs-navbar-brand-font-size: 2rem;
+}
+
+// Gradient Text
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+    padding-top: 4rem;
+    padding-bottom: 1rem;
+}
+
+h1 {
+
+    font-weight: 800;
+}
+
+
+pre {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    padding: 16px;
+    background-color: #0D1117;
+    /* Dark background color */
+    border: 1px solid #21262D;
+    /* Slightly lighter border */
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre;
+    color: #c9d1d9;
+    /* Light text color */
+}
+
+
+.card {
+    color: #f1f1f1;
+}
+
+.card-header {
+    font-weight: 700;
+}
+
+.card-text {
+    font-weight: 500;
+}
+
+.card-text {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.card-text span {
+    color: #f5f5f5;
+    display: flex;
+    text-align: end;
+}
+
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+
+#startMiningBtn {
+    background-color: #fcfc03;
+    border: none;
+    color: #000;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 2px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#startMiningBtn:hover {
+    background-color: #fcfc03;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+#startMiningBtn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#stopMiningBtn {
+    background-color: #fc0303;
+    border: none;
+    color: #000;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 2px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#stopMiningBtn:hover {
+    background-color: #fc0303;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+#stopMiningBtn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 592px) {
+    h4 {
+        font-size: 1rem;
+        /* Smaller size for screens below 400px */
+    }
+}
+
+@media (max-width: 412px) {
+    h4 {
+        font-size: 0.9rem;
+        /* Smaller size for screens below 400px */
+    }
+}
+
+@media (max-width: 376px) {
+    h4 {
+        font-size: 0.8rem;
+        /* Smaller size for screens below 400px */
+    }
+}

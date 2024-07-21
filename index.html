@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BitOre Mining App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+
+  <body data-bs-theme="dark">
+    <header>
+      <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/" data-navigo>
+            <img
+              src="./bitoreSmall.png"
+              alt="Logo"
+              width="40"
+              height="40"
+              class="d-inline-block align-text-top"
+            />
+            BitOre.org
+          </a>
+
+          <button
+            class="btn btn-outline-light"
+            type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#settingsModal"
+            id="settingsButton"
+            aria-label="Settings"
+          >
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
+    <main id="App"></main>
+
+    <footer>
+      <div class="container mt-4">
+        <div class="row text-end">
+          <p>Made with ❤️+ Typescript</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Settings Modal -->
+    <div
+      class="modal fade"
+      id="settingsModal"
+      tabindex="-1"
+      aria-labelledby="settingsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="settingsModalLabel">Settings</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="settingsForm">
+              <div class="mb-3">
+                <label for="privateKey" class="form-label">Private Key</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="privateKey"
+                    name="privateKey"
+                  />
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    id="revealPrivateKey"
+                  >
+                    Reveal Private Key
+                  </button>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="customRPC" class="form-label">Custom RPC</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="customRPC"
+                  name="customRPC"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="customGas" class="form-label"
+                  >Custom Gas (0 = automatic)</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="customGas"
+                  name="customGas"
+                  min="0"
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="settingsModal-saveAndClose"
+              data-bs-dismiss="modal"
+            >
+              Save & Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wallet Modal -->
+    <div
+      class="modal fade"
+      id="walletModal"
+      tabindex="-1"
+      aria-labelledby="walletModalLabel"
+      aria-hidden="true"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="walletModalLabel">Create New Wallet</h5>
+          </div>
+          <div class="modal-body">
+            <p>
+              BitOre require to have a valid EVM compatible wallet to mine.
+              <br />
+              You can change your wallet address at any time in the settings.
+            </p>
+            <p>
+              Please be advised that our code is open-source. While we strive to
+              maintain a high level of security, it is ultimately your
+              responsibility to protect your private key. Ensure you keep your
+              private key confidential and do not share it with anyone.
+            </p>
+            <div class="form-check mb-3">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="acceptTerms"
+              />
+              <label class="form-check-label" for="acceptTerms">
+                I accept the terms and conditions
+              </label>
+              <p class="terms-agreement">
+                By creating a wallet, you agree to our open-source nature and
+                acknowledge responsibility for securing your private key. Loss
+                of the key may result in irreversible loss of your assets.
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="generateWallet"
+              disabled
+            >
+              Generate New Wallet
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
