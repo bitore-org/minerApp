@@ -29,6 +29,63 @@ export const abi = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "uint256",
+        name: "newAllowedMiners",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "epochNumber",
+        type: "uint256",
+      },
+    ],
+    name: "AllowedMinersAdjusted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newMiningTarget",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "epochNumber",
+        type: "uint256",
+      },
+    ],
+    name: "DifficultyAdjusted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newEpochLengthInBlocks",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "epochNumber",
+        type: "uint256",
+      },
+    ],
+    name: "EpochLengthAdjusted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "uint256",
         name: "epochNumber",
@@ -58,7 +115,7 @@ export const abi = [
   },
   {
     inputs: [],
-    name: "_MAX_DIFFICULTY",
+    name: "ADJUSTMENT_INTERVAL",
     outputs: [
       {
         internalType: "uint256",
@@ -71,7 +128,7 @@ export const abi = [
   },
   {
     inputs: [],
-    name: "_MIN_DIFFICULTY",
+    name: "BASE_DIFFICULT_MULTIPLIER",
     outputs: [
       {
         internalType: "uint256",
@@ -84,7 +141,46 @@ export const abi = [
   },
   {
     inputs: [],
-    name: "_adjustmentInterval",
+    name: "GAUSSIAN_THRESHOLD_PERCENT",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MAX_DIFFICULTY",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MAX_DIFFICULT_MULTIPLIER",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "MIN_DIFFICULTY",
     outputs: [
       {
         internalType: "uint256",
@@ -161,19 +257,6 @@ export const abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "baseMultiplier",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "address",
@@ -185,7 +268,7 @@ export const abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "success",
+        name: "",
         type: "bool",
       },
     ],
@@ -223,11 +306,11 @@ export const abi = [
         type: "uint256",
       },
     ],
-    name: "checkMintSolution",
+    name: "checkMiningSolution",
     outputs: [
       {
         internalType: "bool",
-        name: "success",
+        name: "",
         type: "bool",
       },
     ],
@@ -382,21 +465,8 @@ export const abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "success",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "maxMultiplier",
-    outputs: [
-      {
-        internalType: "uint256",
         name: "",
-        type: "uint256",
+        type: "bool",
       },
     ],
     stateMutability: "view",
@@ -468,19 +538,6 @@ export const abi = [
   {
     inputs: [],
     name: "miningTarget",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "simpleGaussian",
     outputs: [
       {
         internalType: "uint256",
