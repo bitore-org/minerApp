@@ -1,7 +1,11 @@
+import e from "express";
+
 const BLAST_YELLOW = "#fcfc03";
 
+const BASE_BLUE = "#0757ff";
+
 export class MiningUI {
-  private static readonly BLAST_YELLOW = "#fcfc03";
+  private static readonly UI_COLOR = BLAST_YELLOW;
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private totalSegments = 30;
@@ -44,6 +48,11 @@ export class MiningUI {
     this.totalCells = totalCells;
     this.filledCells = filledCells;
     this.latestBlock = latestBlock;
+
+    if (totalCells > 0) {
+      this.gridCols = Math.ceil(Math.sqrt(this.totalCells * this.ratio));
+      this.gridRows = Math.ceil(this.totalCells / this.gridCols);
+    }
   }
 
   private resizeCanvas() {
@@ -101,7 +110,7 @@ export class MiningUI {
 
     const epochTextWidth = this.ctx.measureText(epochText).width;
 
-    this.ctx.fillStyle = MiningUI.BLAST_YELLOW;
+    this.ctx.fillStyle = MiningUI.UI_COLOR;
     this.ctx.fillRect(10, 10, epochTextWidth + 20, 40);
     this.ctx.fillRect(
       this.canvas.width - hashRateTextWidth - 30,
@@ -139,7 +148,7 @@ export class MiningUI {
     const y = 160;
     const segmentAngle = (2 * Math.PI) / this.totalSegments;
 
-    this.ctx.strokeStyle = MiningUI.BLAST_YELLOW;
+    this.ctx.strokeStyle = MiningUI.UI_COLOR;
     this.ctx.lineWidth = thickness;
 
     if (typeof countdown === "string") {
@@ -222,7 +231,7 @@ export class MiningUI {
 
     this.drawGrid();
 
-    this.fillGridPattern(BLAST_YELLOW, this.filledCells);
+    this.fillGridPattern(MiningUI.UI_COLOR, this.filledCells);
 
     this.drawStatusAndLatestBlock();
   }

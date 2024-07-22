@@ -1,6 +1,7 @@
 import wallet from "../system/wallet/wallet";
 import { BASE_MULTIPLIER } from "../worker/miner/miner";
-import { abi } from "./abis/bitOreABI";
+import { abi as bitOreAbi } from "./abis/bitOreABI";
+import { abi as bitOreTokenAbi } from "./abis/bitOreTokenABI";
 
 import events from "./eventEmmiter";
 
@@ -20,7 +21,11 @@ const DefaultAppState = {
   latestBlock: {},
   initBlock: {},
 
-  contractAddress: "0x4aEeA272eec411D3CA596F3F7C623584D1B37Ce4",
+  contractAddress: "0xC76151A0cACa4f6cB4b37EE72d57D379B77cfc83",
+  tokenAddress: "0xd58d2C7695eF84DC7D69613b1B2d86e3f46262B3",
+
+  tokenBalance: 0,
+  tokenTotalSupply: 0,
 
   difficultyMultiplier: BASE_MULTIPLIER,
   hashRate: 0,
@@ -96,20 +101,27 @@ class AppState {
       );
     }
 
-    const blockLeft =
-      this.state.currentEpoch.endBlockNumber - this.state.latestBlock.number;
+    if (
+      this.state.currentEpoch.endBlockNumber &&
+      this.state.latestBlock.number
+    ) {
+      const blockLeft =
+        this.state.currentEpoch.endBlockNumber - this.state.latestBlock.number;
 
-    const expectedEndTime =
-      Number(
-        this.state.currentEpoch.endBlockNumber - this.state.latestBlock.number
-      ) * 2;
+      const expectedEndTime =
+        Number(
+          this.state.currentEpoch.endBlockNumber - this.state.latestBlock.number
+        ) * 2;
 
-    const timeLeft =
-      expectedEndTime +
-      Number(this.state.latestBlock.timestamp) -
-      currentTimeSec;
+      const timeLeft =
+        expectedEndTime +
+        Number(this.state.latestBlock.timestamp) -
+        currentTimeSec;
 
-    return { ...this.state, currentTimeSec, blockLeft, timeLeft };
+      return { ...this.state, currentTimeSec, blockLeft, timeLeft };
+    }
+
+    return { ...this.state, currentTimeSec, blockLeft: -1n, timeLeft: -1n };
   }
 
   private async updateWallet() {
@@ -119,21 +131,38 @@ class AppState {
 
     const result = await this.publicClient.readContract({
       address: this.state.contractAddress,
-      abi: abi,
+      abi: bitOreAbi,
       functionName: "getDifficultyMultiplier",
       args: [wallet.getWallet()],
     });
 
+    const tokenBalance = await this.publicClient.readContract({
+      address: this.state.tokenAddress,
+      abi: bitOreTokenAbi,
+      functionName: "balanceOf",
+      args: [wallet.getWallet()],
+    });
+
     this.state.difficultyMultiplier = result;
+    this.state.tokenBalance = tokenBalance;
   }
 
   private async updateState() {
     const result = await this.publicClient.readContract({
       address: this.state.contractAddress,
-      abi: abi,
+      abi: bitOreAbi,
       functionName: "getEpochInfo",
       args: [],
     });
+
+    const totalSupply = await this.publicClient.readContract({
+      address: this.state.tokenAddress,
+      abi: bitOreTokenAbi,
+      functionName: "totalSupply",
+      args: [],
+    });
+
+    this.state.tokenTotalSupply = totalSupply;
 
     this.state.currentEpoch = result;
 

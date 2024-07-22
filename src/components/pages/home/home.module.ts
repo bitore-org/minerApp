@@ -71,10 +71,15 @@ export const HomePage = async () => {
     const tokenTotalSupply = document.getElementById("tokenTotalSupply");
 
     if (tokenBalance && walletBalance && miningMultiplier && tokenTotalSupply) {
+      tokenBalance.innerHTML = `${(
+        Number(state.tokenBalance) /
+        10 ** 18
+      ).toFixed(8)} ETH`;
+
       walletBalance.innerHTML = `${(
         Number(state.walletBalance) /
         10 ** 18
-      ).toFixed(8)} ETH`;
+      ).toFixed(8)} ORE`;
 
       miningMultiplier.innerHTML = `${
         (Number(
@@ -83,6 +88,11 @@ export const HomePage = async () => {
           10000) *
         100
       }%`;
+
+      tokenTotalSupply.innerHTML = `${(
+        Number(state.tokenTotalSupply) /
+        10 ** 18
+      ).toFixed(8)} ORE`;
     }
 
     minerCanvas.updateValues(

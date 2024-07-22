@@ -131,7 +131,7 @@ export class WalletModule {
       const data = encodeFunctionData({
         abi: abi,
         functionName: "mine",
-        args: [nonce, []],
+        args: [nonce, [appState.tokenAddress]],
       });
 
       const hash = await this.walletClient.sendTransaction({
