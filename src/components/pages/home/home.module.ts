@@ -104,7 +104,5 @@ export const HomePage = async () => {
     );
   }
 
-  minerCanvas.draw(getCountDown());
-
-  setInterval(updateCountdown, 300);
+  setInterval(updateCountdown, 100);
 };

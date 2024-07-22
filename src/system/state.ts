@@ -9,7 +9,7 @@ const DefaultAppState = {
   currentEpoch: {
     epochCount: 0,
     minerCount: 0,
-    allowedMiners: 100,
+    allowedMiners: 20,
     startBlockNumber: 0,
     endBlockNumber: 0,
     endTimestamp: 0,

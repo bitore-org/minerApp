@@ -1,5 +1,3 @@
-import e from "express";
-
 const BLAST_YELLOW = "#fcfc03";
 
 const BASE_BLUE = "#0757ff";
@@ -9,11 +7,11 @@ export class MiningUI {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private totalSegments = 30;
-  private totalCells = 100;
+  private totalCells = 20;
   private ratio = 3 / 1;
-  private gridCols: number;
-  private gridRows: number;
-  private grid: string[][];
+  private gridCols!: number;
+  private gridRows!: number;
+  private grid!: string[][];
   private gap = 2;
   private epoch: number = 1;
   private hashRate: number = 100;
@@ -25,15 +23,19 @@ export class MiningUI {
     this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
 
+    this.updateGrid();
+
+    window.addEventListener("resize", this.resizeCanvas.bind(this));
+    this.resizeCanvas();
+  }
+
+  private updateGrid() {
     this.gridCols = Math.ceil(Math.sqrt(this.totalCells * this.ratio));
     this.gridRows = Math.ceil(this.totalCells / this.gridCols);
 
     this.grid = Array(this.gridRows)
       .fill(null)
       .map(() => Array(this.gridCols).fill("#3b3b3b"));
-
-    window.addEventListener("resize", this.resizeCanvas.bind(this));
-    this.resizeCanvas();
   }
 
   public updateValues(
@@ -48,11 +50,6 @@ export class MiningUI {
     this.totalCells = totalCells;
     this.filledCells = filledCells;
     this.latestBlock = latestBlock;
-
-    if (totalCells > 0) {
-      this.gridCols = Math.ceil(Math.sqrt(this.totalCells * this.ratio));
-      this.gridRows = Math.ceil(this.totalCells / this.gridCols);
-    }
   }
 
   private resizeCanvas() {
@@ -84,6 +81,9 @@ export class MiningUI {
   }
 
   private fixSquare() {
+    this.gridCols = Math.ceil(Math.sqrt(this.totalCells * this.ratio));
+    this.gridRows = Math.ceil(this.totalCells / this.gridCols);
+
     const currentCells = this.gridCols * this.gridRows;
 
     if (currentCells > this.totalCells) {
@@ -180,32 +180,37 @@ export class MiningUI {
   }
 
   private drawGrid() {
-    const maxCellSize = Math.min(
-      25,
-      (this.canvas.width - (this.gridCols - 1) * this.gap) / this.gridCols,
-      (this.canvas.height - 200 - (this.gridRows - 1) * this.gap) /
-        this.gridRows
-    );
+    try {
+      const maxCellSize = Math.min(
+        25,
+        (this.canvas.width - (this.gridCols - 1) * this.gap) / this.gridCols,
+        (this.canvas.height - 200 - (this.gridRows - 1) * this.gap) /
+          this.gridRows
+      );
 
-    const offsetX =
-      (this.canvas.width -
-        (maxCellSize * this.gridCols + this.gap * (this.gridCols - 1))) /
-      2;
-    const offsetY = 320;
+      const offsetX =
+        (this.canvas.width -
+          (maxCellSize * this.gridCols + this.gap * (this.gridCols - 1))) /
+        2;
+      const offsetY = 320;
 
-    for (let i = 0; i < this.gridRows; i++) {
-      for (let j = 0; j < this.gridCols; j++) {
-        this.ctx.fillStyle = this.grid[i][j];
-        this.ctx.fillRect(
-          offsetX + j * (maxCellSize + this.gap),
-          offsetY + i * (maxCellSize + this.gap),
-          maxCellSize,
-          maxCellSize
-        );
+      for (let i = 0; i < this.gridRows; i++) {
+        for (let j = 0; j < this.gridCols; j++) {
+          this.ctx.fillStyle = this.grid[i][j];
+          this.ctx.fillRect(
+            offsetX + j * (maxCellSize + this.gap),
+            offsetY + i * (maxCellSize + this.gap),
+            maxCellSize,
+            maxCellSize
+          );
+        }
       }
+    } catch (error) {
+      this.updateGrid();
     }
 
     this.fixSquare();
+    this.fillGridPattern(MiningUI.UI_COLOR, this.filledCells);
   }
 
   public draw(countdown?: number) {
