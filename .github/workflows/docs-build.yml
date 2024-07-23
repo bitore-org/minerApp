@@ -5,8 +5,7 @@ on:
     branches:
       - main  # or your default branch name
     paths:
-      - 'src/**'  # Only trigger on changes in the docs folder
-      - 'public/**'
+      - 'package.json'
 
 jobs:
   build:
