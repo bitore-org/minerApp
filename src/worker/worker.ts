@@ -12,7 +12,7 @@ ctx.addEventListener("message", (event: MessageEvent) => {
   // Perform some calculation or task
   const result = performTask(data);
 
-  console.log(result);
+  console.log("Worker finished", result);
 
   // Send the result back to the main thread
   ctx.postMessage(result);
