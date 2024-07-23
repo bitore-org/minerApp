@@ -1,5 +1,5 @@
 import { template } from "./home.template";
-import { MiningUI } from "./miningCanvas";
+import { MiningUI } from "../../gui/miningCanvas";
 
 import appState from "../../../system/state";
 import events from "../../../system/eventEmmiter";
