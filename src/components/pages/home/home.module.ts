@@ -79,7 +79,7 @@ export const HomePage = async () => {
       walletBalance.innerHTML = `${(
         Number(state.walletBalance) /
         10 ** 18
-      ).toFixed(8)} ORE`;
+      ).toFixed(8)} ETH`;
 
       miningMultiplier.innerHTML = `${
         (Number(
