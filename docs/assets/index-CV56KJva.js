@@ -12028,7 +12028,7 @@ async function call(client, args) {
   } catch (err) {
     const data2 = getRevertErrorData(err);
     const { offchainLookup, offchainLookupSignature } = await __vitePreload(async () => {
-      const { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 } = await import("./ccip-BaOAUwcb.js");
+      const { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 } = await import("./ccip-DU6eAyDh.js");
       return { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 };
     }, true ? [] : void 0, import.meta.url);
     if (client.ccipRead !== false && (data2 == null ? void 0 : data2.slice(0, 10)) === offchainLookupSignature && to)
@@ -18807,7 +18807,7 @@ const HomePage = async () => {
     const tokenTotalSupply = document.getElementById("tokenTotalSupply");
     if (tokenBalance && walletBalance && miningMultiplier && tokenTotalSupply) {
       tokenBalance.innerHTML = `${(Number(state.tokenBalance) / 10 ** 18).toFixed(8)} ORE`;
-      walletBalance.innerHTML = `${(Number(state.walletBalance) / 10 ** 18).toFixed(8)} ORE`;
+      walletBalance.innerHTML = `${(Number(state.walletBalance) / 10 ** 18).toFixed(8)} ETH`;
       miningMultiplier.innerHTML = `${Number(
         10000n * BigInt(state.difficultyMultiplier) / BASE_MULTIPLIER
       ) / 1e4 * 100}%`;
