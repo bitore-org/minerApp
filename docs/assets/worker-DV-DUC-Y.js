@@ -756,7 +756,7 @@ const ctx = self;
 ctx.addEventListener("message", (event) => {
   const data = event.data;
   const result = performTask(data);
-  console.log(result);
+  console.log("Worker finished: ", result);
   ctx.postMessage(result);
 });
 function performTask(data) {
