@@ -5978,7 +5978,7 @@ const _MiningUI = class _MiningUI {
     __publicField(this, "canvas");
     __publicField(this, "ctx");
     __publicField(this, "totalSegments", 30);
-    __publicField(this, "totalCells", 100);
+    __publicField(this, "totalCells", 20);
     __publicField(this, "ratio", 3 / 1);
     __publicField(this, "gridCols");
     __publicField(this, "gridRows");
@@ -5991,11 +5991,14 @@ const _MiningUI = class _MiningUI {
     __publicField(this, "latestBlock", 999999);
     this.canvas = document.getElementById(canvasId);
     this.ctx = this.canvas.getContext("2d");
+    this.updateGrid();
+    window.addEventListener("resize", this.resizeCanvas.bind(this));
+    this.resizeCanvas();
+  }
+  updateGrid() {
     this.gridCols = Math.ceil(Math.sqrt(this.totalCells * this.ratio));
     this.gridRows = Math.ceil(this.totalCells / this.gridCols);
     this.grid = Array(this.gridRows).fill(null).map(() => Array(this.gridCols).fill("#3b3b3b"));
-    window.addEventListener("resize", this.resizeCanvas.bind(this));
-    this.resizeCanvas();
   }
   updateValues(epoch, hashRate, totalCells, filledCells, latestBlock) {
     this.epoch = epoch;
@@ -6029,6 +6032,8 @@ const _MiningUI = class _MiningUI {
     }
   }
   fixSquare() {
+    this.gridCols = Math.ceil(Math.sqrt(this.totalCells * this.ratio));
+    this.gridRows = Math.ceil(this.totalCells / this.gridCols);
     const currentCells = this.gridCols * this.gridRows;
     if (currentCells > this.totalCells) {
       const diff = currentCells - this.totalCells;
@@ -6047,7 +6052,7 @@ const _MiningUI = class _MiningUI {
     const epochText = `Epoch ${this.epoch}`;
     const hashRateTextWidth = this.ctx.measureText(hashRateText).width;
     const epochTextWidth = this.ctx.measureText(epochText).width;
-    this.ctx.fillStyle = _MiningUI.BLAST_YELLOW;
+    this.ctx.fillStyle = _MiningUI.UI_COLOR;
     this.ctx.fillRect(10, 10, epochTextWidth + 20, 40);
     this.ctx.fillRect(
       this.canvas.width - hashRateTextWidth - 30,
@@ -6076,7 +6081,7 @@ const _MiningUI = class _MiningUI {
     const x = this.canvas.width / 2;
     const y = 160;
     const segmentAngle = 2 * Math.PI / this.totalSegments;
-    this.ctx.strokeStyle = _MiningUI.BLAST_YELLOW;
+    this.ctx.strokeStyle = _MiningUI.UI_COLOR;
     this.ctx.lineWidth = thickness;
     if (typeof countdown === "string") {
       this.ctx.fillStyle = "white";
@@ -6101,25 +6106,30 @@ const _MiningUI = class _MiningUI {
     this.ctx.fillText(countdown.toString(), x - 33, y + 30);
   }
   drawGrid() {
-    const maxCellSize = Math.min(
-      25,
-      (this.canvas.width - (this.gridCols - 1) * this.gap) / this.gridCols,
-      (this.canvas.height - 200 - (this.gridRows - 1) * this.gap) / this.gridRows
-    );
-    const offsetX = (this.canvas.width - (maxCellSize * this.gridCols + this.gap * (this.gridCols - 1))) / 2;
-    const offsetY = 320;
-    for (let i = 0; i < this.gridRows; i++) {
-      for (let j = 0; j < this.gridCols; j++) {
-        this.ctx.fillStyle = this.grid[i][j];
-        this.ctx.fillRect(
-          offsetX + j * (maxCellSize + this.gap),
-          offsetY + i * (maxCellSize + this.gap),
-          maxCellSize,
-          maxCellSize
-        );
+    try {
+      const maxCellSize = Math.min(
+        25,
+        (this.canvas.width - (this.gridCols - 1) * this.gap) / this.gridCols,
+        (this.canvas.height - 200 - (this.gridRows - 1) * this.gap) / this.gridRows
+      );
+      const offsetX = (this.canvas.width - (maxCellSize * this.gridCols + this.gap * (this.gridCols - 1))) / 2;
+      const offsetY = 320;
+      for (let i = 0; i < this.gridRows; i++) {
+        for (let j = 0; j < this.gridCols; j++) {
+          this.ctx.fillStyle = this.grid[i][j];
+          this.ctx.fillRect(
+            offsetX + j * (maxCellSize + this.gap),
+            offsetY + i * (maxCellSize + this.gap),
+            maxCellSize,
+            maxCellSize
+          );
+        }
       }
+    } catch (error) {
+      this.updateGrid();
     }
     this.fixSquare();
+    this.fillGridPattern(_MiningUI.UI_COLOR, this.filledCells);
   }
   draw(countdown) {
     this.countdown = countdown;
@@ -6138,11 +6148,11 @@ const _MiningUI = class _MiningUI {
       this.drawCountdown("Loading");
     }
     this.drawGrid();
-    this.fillGridPattern(BLAST_YELLOW, this.filledCells);
+    this.fillGridPattern(_MiningUI.UI_COLOR, this.filledCells);
     this.drawStatusAndLatestBlock();
   }
 };
-__publicField(_MiningUI, "BLAST_YELLOW", "#fcfc03");
+__publicField(_MiningUI, "UI_COLOR", BLAST_YELLOW);
 let MiningUI = _MiningUI;
 const version$1 = "1.0.5";
 let BaseError$1 = class BaseError extends Error {
@@ -12018,7 +12028,7 @@ async function call(client, args) {
   } catch (err) {
     const data2 = getRevertErrorData(err);
     const { offchainLookup, offchainLookupSignature } = await __vitePreload(async () => {
-      const { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 } = await import("./ccip-eCfhmhiu.js");
+      const { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 } = await import("./ccip-DnyRL_mH.js");
       return { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 };
     }, true ? [] : void 0, import.meta.url);
     if (client.ccipRead !== false && (data2 == null ? void 0 : data2.slice(0, 10)) === offchainLookupSignature && to)
@@ -12658,7 +12668,7 @@ async function getEip712Domain(client, parameters) {
   const { address, factory, factoryData } = parameters;
   try {
     const [fields, name, version2, chainId, verifyingContract, salt, extensions] = await getAction(client, readContract, "readContract")({
-      abi: abi$1,
+      abi: abi$2,
       address,
       functionName: "eip712Domain",
       factory,
@@ -12683,7 +12693,7 @@ async function getEip712Domain(client, parameters) {
     throw error;
   }
 }
-const abi$1 = [
+const abi$2 = [
   {
     inputs: [],
     name: "eip712Domain",
@@ -17512,7 +17522,7 @@ const _EventEmitter = class _EventEmitter {
 __publicField(_EventEmitter, "instance");
 let EventEmitter = _EventEmitter;
 const events = EventEmitter.getInstance();
-const abi = [
+const abi$1 = [
   {
     inputs: [
       {
@@ -17538,6 +17548,63 @@ const abi = [
     inputs: [],
     name: "ReentrancyGuardReentrantCall",
     type: "error"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newAllowedMiners",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "epochNumber",
+        type: "uint256"
+      }
+    ],
+    name: "AllowedMinersAdjusted",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newMiningTarget",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "epochNumber",
+        type: "uint256"
+      }
+    ],
+    name: "DifficultyAdjusted",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newEpochLengthInBlocks",
+        type: "uint256"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "epochNumber",
+        type: "uint256"
+      }
+    ],
+    name: "EpochLengthAdjusted",
+    type: "event"
   },
   {
     anonymous: false,
@@ -17572,7 +17639,7 @@ const abi = [
   },
   {
     inputs: [],
-    name: "_MAX_DIFFICULTY",
+    name: "ADJUSTMENT_INTERVAL",
     outputs: [
       {
         internalType: "uint256",
@@ -17585,7 +17652,7 @@ const abi = [
   },
   {
     inputs: [],
-    name: "_MIN_DIFFICULTY",
+    name: "BASE_DIFFICULT_MULTIPLIER",
     outputs: [
       {
         internalType: "uint256",
@@ -17598,7 +17665,46 @@ const abi = [
   },
   {
     inputs: [],
-    name: "_adjustmentInterval",
+    name: "GAUSSIAN_THRESHOLD_PERCENT",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "MAX_DIFFICULTY",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "MAX_DIFFICULT_MULTIPLIER",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "MIN_DIFFICULTY",
     outputs: [
       {
         internalType: "uint256",
@@ -17675,19 +17781,6 @@ const abi = [
     type: "function"
   },
   {
-    inputs: [],
-    name: "baseMultiplier",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
     inputs: [
       {
         internalType: "address",
@@ -17699,7 +17792,7 @@ const abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "success",
+        name: "",
         type: "bool"
       }
     ],
@@ -17737,11 +17830,11 @@ const abi = [
         type: "uint256"
       }
     ],
-    name: "checkMintSolution",
+    name: "checkMiningSolution",
     outputs: [
       {
         internalType: "bool",
-        name: "success",
+        name: "",
         type: "bool"
       }
     ],
@@ -17896,21 +17989,8 @@ const abi = [
     outputs: [
       {
         internalType: "bool",
-        name: "success",
-        type: "bool"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "maxMultiplier",
-    outputs: [
-      {
-        internalType: "uint256",
         name: "",
-        type: "uint256"
+        type: "bool"
       }
     ],
     stateMutability: "view",
@@ -17982,19 +18062,6 @@ const abi = [
   {
     inputs: [],
     name: "miningTarget",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256"
-      }
-    ],
-    stateMutability: "view",
-    type: "function"
-  },
-  {
-    inputs: [],
-    name: "simpleGaussian",
     outputs: [
       {
         internalType: "uint256",
@@ -18086,7 +18153,7 @@ const _WalletModule = class _WalletModule {
       const appState$1 = appState.getState();
       const canMine = await this.publicClient.readContract({
         address: appState$1.contractAddress,
-        abi,
+        abi: abi$1,
         functionName: "canMine",
         args: [this.account.address]
       });
@@ -18094,9 +18161,9 @@ const _WalletModule = class _WalletModule {
         return;
       }
       const data = encodeFunctionData({
-        abi,
+        abi: abi$1,
         functionName: "mine",
-        args: [nonce, []]
+        args: [nonce, [appState$1.tokenAddress]]
       });
       const hash2 = await this.walletClient.sendTransaction({
         account: this.account,
@@ -18150,11 +18217,426 @@ __publicField(_WalletModule, "instance");
 let WalletModule = _WalletModule;
 const wallet = WalletModule.getInstance();
 const BASE_MULTIPLIER = 10000n;
+const abi = [
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "name_",
+        type: "string"
+      },
+      {
+        internalType: "string",
+        name: "symbol_",
+        type: "string"
+      },
+      {
+        internalType: "address",
+        name: "_BitOrePow",
+        type: "address"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor"
+  },
+  {
+    inputs: [],
+    name: "ReentrancyGuardReentrantCall",
+    type: "error"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "owner",
+        type: "address"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "spender",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "value",
+        type: "uint256"
+      }
+    ],
+    name: "Approval",
+    type: "event"
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address"
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address"
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "value",
+        type: "uint256"
+      }
+    ],
+    name: "Transfer",
+    type: "event"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "owner",
+        type: "address"
+      },
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address"
+      }
+    ],
+    name: "allowance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256"
+      }
+    ],
+    name: "approve",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "account",
+        type: "address"
+      }
+    ],
+    name: "balanceOf",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "decimals",
+    outputs: [
+      {
+        internalType: "uint8",
+        name: "",
+        type: "uint8"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "subtractedValue",
+        type: "uint256"
+      }
+    ],
+    name: "decreaseAllowance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "spender",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "addedValue",
+        type: "uint256"
+      }
+    ],
+    name: "increaseAllowance",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "maxSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address"
+      }
+    ],
+    name: "minersLastEpoch",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address"
+      }
+    ],
+    name: "minersLastMint",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "epoch",
+        type: "uint256"
+      },
+      {
+        internalType: "bytes32",
+        name: "nonce",
+        type: "bytes32"
+      },
+      {
+        internalType: "uint256",
+        name: "position",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "epochBlock",
+        type: "uint256"
+      },
+      {
+        internalType: "uint256",
+        name: "epochMinersLimit",
+        type: "uint256"
+      }
+    ],
+    name: "mintChip",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "epoch",
+        type: "uint256"
+      },
+      {
+        internalType: "bytes32",
+        name: "nonce",
+        type: "bytes32"
+      },
+      {
+        internalType: "uint256",
+        name: "epochMinersLimit",
+        type: "uint256"
+      }
+    ],
+    name: "mintEpoch",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "name",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "symbol",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [],
+    name: "totalSupply",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "to",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256"
+      }
+    ],
+    name: "transfer",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "function"
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "from",
+        type: "address"
+      },
+      {
+        internalType: "address",
+        name: "to",
+        type: "address"
+      },
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256"
+      }
+    ],
+    name: "transferFrom",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool"
+      }
+    ],
+    stateMutability: "nonpayable",
+    type: "function"
+  }
+];
 const DefaultAppState = {
   currentEpoch: {
     epochCount: 0,
     minerCount: 0,
-    allowedMiners: 100,
+    allowedMiners: 20,
     startBlockNumber: 0,
     endBlockNumber: 0,
     endTimestamp: 0,
@@ -18164,7 +18646,10 @@ const DefaultAppState = {
   },
   latestBlock: {},
   initBlock: {},
-  contractAddress: "0x4aEeA272eec411D3CA596F3F7C623584D1B37Ce4",
+  contractAddress: "0xC76151A0cACa4f6cB4b37EE72d57D379B77cfc83",
+  tokenAddress: "0xd58d2C7695eF84DC7D69613b1B2d86e3f46262B3",
+  tokenBalance: 0,
+  tokenTotalSupply: 0,
   difficultyMultiplier: BASE_MULTIPLIER,
   hashRate: 0,
   walletBalance: 0,
@@ -18218,32 +18703,49 @@ const _AppState = class _AppState {
         (this.state.latestBlock.timestamp - this.state.initBlock.timestamp) / (this.state.latestBlock.number - this.state.initBlock.number)
       );
     }
-    const blockLeft = this.state.currentEpoch.endBlockNumber - this.state.latestBlock.number;
-    const expectedEndTime = Number(
-      this.state.currentEpoch.endBlockNumber - this.state.latestBlock.number
-    ) * 2;
-    const timeLeft = expectedEndTime + Number(this.state.latestBlock.timestamp) - currentTimeSec;
-    return { ...this.state, currentTimeSec, blockLeft, timeLeft };
+    if (this.state.currentEpoch.endBlockNumber && this.state.latestBlock.number) {
+      const blockLeft = this.state.currentEpoch.endBlockNumber - this.state.latestBlock.number;
+      const expectedEndTime = Number(
+        this.state.currentEpoch.endBlockNumber - this.state.latestBlock.number
+      ) * 2;
+      const timeLeft = expectedEndTime + Number(this.state.latestBlock.timestamp) - currentTimeSec;
+      return { ...this.state, currentTimeSec, blockLeft, timeLeft };
+    }
+    return { ...this.state, currentTimeSec, blockLeft: -1n, timeLeft: -1n };
   }
   async updateWallet() {
     const balance = await wallet.getBalance();
     this.state.walletBalance = balance;
     const result = await this.publicClient.readContract({
       address: this.state.contractAddress,
-      abi,
+      abi: abi$1,
       functionName: "getDifficultyMultiplier",
       args: [wallet.getWallet()]
     });
+    const tokenBalance = await this.publicClient.readContract({
+      address: this.state.tokenAddress,
+      abi,
+      functionName: "balanceOf",
+      args: [wallet.getWallet()]
+    });
     this.state.difficultyMultiplier = result;
+    this.state.tokenBalance = tokenBalance;
   }
   async updateState() {
     var _a, _b, _c, _d, _e, _f;
     const result = await this.publicClient.readContract({
       address: this.state.contractAddress,
-      abi,
+      abi: abi$1,
       functionName: "getEpochInfo",
       args: []
     });
+    const totalSupply = await this.publicClient.readContract({
+      address: this.state.tokenAddress,
+      abi,
+      functionName: "totalSupply",
+      args: []
+    });
+    this.state.tokenTotalSupply = totalSupply;
     this.state.currentEpoch = result;
     const latestBlock = await this.publicClient.getBlock();
     if (!((_b = (_a = this.state) == null ? void 0 : _a.latestBlock) == null ? void 0 : _b.number) || latestBlock.number > ((_d = (_c = this.state) == null ? void 0 : _c.latestBlock) == null ? void 0 : _d.number)) {
@@ -18304,10 +18806,12 @@ const HomePage = async () => {
     const miningMultiplier = document.getElementById("miningMultiplier");
     const tokenTotalSupply = document.getElementById("tokenTotalSupply");
     if (tokenBalance && walletBalance && miningMultiplier && tokenTotalSupply) {
-      walletBalance.innerHTML = `${(Number(state.walletBalance) / 10 ** 18).toFixed(8)} ETH`;
+      tokenBalance.innerHTML = `${(Number(state.tokenBalance) / 10 ** 18).toFixed(8)} ETH`;
+      walletBalance.innerHTML = `${(Number(state.walletBalance) / 10 ** 18).toFixed(8)} ORE`;
       miningMultiplier.innerHTML = `${Number(
         10000n * BigInt(state.difficultyMultiplier) / BASE_MULTIPLIER
       ) / 1e4 * 100}%`;
+      tokenTotalSupply.innerHTML = `${(Number(state.tokenTotalSupply) / 10 ** 18).toFixed(8)} ORE`;
     }
     minerCanvas.updateValues(
       Number(state.currentEpoch.epochCount),
@@ -18317,8 +18821,7 @@ const HomePage = async () => {
       Number(state.latestBlock.number) || 99999999
     );
   }
-  minerCanvas.draw(getCountDown());
-  setInterval(updateCountdown, 300);
+  setInterval(updateCountdown, 100);
 };
 const InitRouter = () => {
   const router = new Navigo("/");

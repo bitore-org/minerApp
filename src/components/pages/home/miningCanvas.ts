@@ -1,6 +1,6 @@
 const BLAST_YELLOW = "#fcfc03";
 
-const BASE_BLUE = "#0757ff";
+// const BASE_BLUE = "#0757ff";
 
 export class MiningUI {
   private static readonly UI_COLOR = BLAST_YELLOW;
