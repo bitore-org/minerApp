@@ -12028,7 +12028,7 @@ async function call(client, args) {
   } catch (err) {
     const data2 = getRevertErrorData(err);
     const { offchainLookup, offchainLookupSignature } = await __vitePreload(async () => {
-      const { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 } = await import("./ccip-DU6eAyDh.js");
+      const { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 } = await import("./ccip-1ykbQtkK.js");
       return { offchainLookup: offchainLookup2, offchainLookupSignature: offchainLookupSignature2 };
     }, true ? [] : void 0, import.meta.url);
     if (client.ccipRead !== false && (data2 == null ? void 0 : data2.slice(0, 10)) === offchainLookupSignature && to)
@@ -18938,7 +18938,7 @@ class WalletModal {
 }
 function WorkerWrapper(options) {
   return new Worker(
-    "" + new URL("worker-B8WqwRCD.js", import.meta.url).href,
+    "" + new URL("worker-DV-DUC-Y.js", import.meta.url).href,
     {
       type: "module",
       name: options == null ? void 0 : options.name
