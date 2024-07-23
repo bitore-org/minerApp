@@ -16,6 +16,12 @@ export const template = () => {
     </div>
 
     <div class="container mt-4">
+      <div class="card" id="pixiCanvas">
+
+      </div>
+    </div>
+
+    <div class="container mt-4">
       <div class="row justify-content-center">
         <div class="col-md-6 text-center">
           <button id="startMiningBtn" class="btn btn-lg btn-primary btn-block">

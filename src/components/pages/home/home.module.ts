@@ -5,6 +5,7 @@ import appState from "../../../system/state";
 import events from "../../../system/eventEmmiter";
 import wallet from "../../../system/wallet/wallet";
 import { BASE_MULTIPLIER } from "../../../worker/miner/miner";
+import { startGui } from "../../gui/coreGui";
 
 // register controller in chart.js and ensure the defaults are set
 
@@ -35,6 +36,8 @@ export const HomePage = async () => {
     wallet.getWallet();
 
   // Start Mining Button
+
+  startGui().catch((e) => console.log(e));
 
   const startMiningBtn = document.getElementById("startMiningBtn");
   const stopMiningBtn = document.getElementById("stopMiningBtn");
