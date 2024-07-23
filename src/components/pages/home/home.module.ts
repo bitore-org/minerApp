@@ -74,7 +74,7 @@ export const HomePage = async () => {
       tokenBalance.innerHTML = `${(
         Number(state.tokenBalance) /
         10 ** 18
-      ).toFixed(8)} ETH`;
+      ).toFixed(8)} ORE`;
 
       walletBalance.innerHTML = `${(
         Number(state.walletBalance) /
