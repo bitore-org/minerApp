@@ -1,33 +1,7 @@
 import { template } from "./home.template";
-import { MiningUI } from "../../gui/miningCanvas";
 
-import appState from "../../../system/state";
-import events from "../../../system/eventEmmiter";
 import wallet from "../../../system/wallet/wallet";
-import { BASE_MULTIPLIER } from "../../../worker/miner/miner";
-import { startGui } from "../../gui/coreGui";
-
-// register controller in chart.js and ensure the defaults are set
-
-const getCountDown = () => {
-  const state = appState.getState();
-
-  const blockLeft = state.blockLeft;
-
-  if (!blockLeft && blockLeft != 0) {
-    return undefined;
-  }
-
-  if (blockLeft < 0) {
-    return -1;
-  }
-
-  if (state.timeLeft < 0) {
-    return state.timeLeft;
-  }
-
-  return state.timeLeft;
-};
+import { MiningUI } from "../../gui/miningUi";
 
 export const HomePage = async () => {
   (document.getElementById("App") as any).innerHTML = template();
@@ -35,77 +9,8 @@ export const HomePage = async () => {
   (document.getElementById("walletAddress") as any).innerHTML =
     wallet.getWallet();
 
-  // Start Mining Button
+  // Usage
+  const miningUI = new MiningUI();
 
-  startGui().catch((e) => console.log(e));
-
-  const startMiningBtn = document.getElementById("startMiningBtn");
-  const stopMiningBtn = document.getElementById("stopMiningBtn");
-
-  if (startMiningBtn && stopMiningBtn) {
-    startMiningBtn.addEventListener("click", () => {
-      startMiningBtn.style.display = "none";
-      stopMiningBtn.style.display = "";
-
-      events.emit("StartMining");
-    });
-
-    stopMiningBtn.addEventListener("click", () => {
-      stopMiningBtn.style.display = "none";
-      startMiningBtn.style.display = "";
-
-      events.emit("StopMining");
-    });
-
-    // Initially hide the stop button
-    stopMiningBtn.style.display = "none";
-  }
-
-  const minerCanvas = new MiningUI("epochDraw");
-
-  function updateCountdown() {
-    minerCanvas.draw(getCountDown());
-
-    const state = appState.getState();
-
-    const tokenBalance = document.getElementById("tokenBalance");
-    const walletBalance = document.getElementById("walletBalance");
-    const miningMultiplier = document.getElementById("miningMultiplier");
-    const tokenTotalSupply = document.getElementById("tokenTotalSupply");
-
-    if (tokenBalance && walletBalance && miningMultiplier && tokenTotalSupply) {
-      tokenBalance.innerHTML = `${(
-        Number(state.tokenBalance) /
-        10 ** 18
-      ).toFixed(8)} ORE`;
-
-      walletBalance.innerHTML = `${(
-        Number(state.walletBalance) /
-        10 ** 18
-      ).toFixed(8)} ETH`;
-
-      miningMultiplier.innerHTML = `${
-        (Number(
-          (10000n * BigInt(state.difficultyMultiplier)) / BASE_MULTIPLIER
-        ) /
-          10000) *
-        100
-      }%`;
-
-      tokenTotalSupply.innerHTML = `${(
-        Number(state.tokenTotalSupply) /
-        10 ** 18
-      ).toFixed(8)} ORE`;
-    }
-
-    minerCanvas.updateValues(
-      Number(state.currentEpoch.epochCount),
-      state.hashRate,
-      Number(state.currentEpoch.allowedMiners),
-      Number(state.currentEpoch.minerCount),
-      Number(state.latestBlock.number) || 99999999
-    );
-  }
-
-  setInterval(updateCountdown, 100);
+  miningUI.load("pixiCanvas").catch(console.log);
 };

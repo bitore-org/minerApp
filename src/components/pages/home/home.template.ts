@@ -10,12 +10,6 @@ export const template = () => {
     </div>
 
     <div class="container mt-4">
-      <div class="card">
-        <canvas id="epochDraw"></canvas>
-      </div>
-    </div>
-
-    <div class="container mt-4">
       <div class="card" id="pixiCanvas">
 
       </div>

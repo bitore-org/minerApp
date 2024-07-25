@@ -1,4 +1,4 @@
-import wallet from "../system/wallet/wallet";
+import wallet, { WalletModule } from "./wallet/wallet";
 import { BASE_MULTIPLIER } from "../worker/miner/miner";
 import { abi as bitOreAbi } from "./abis/bitOreABI";
 import { abi as bitOreTokenAbi } from "./abis/bitOreTokenABI";
@@ -42,6 +42,8 @@ class AppState {
   publicClient: any;
 
   private constructor() {
+    wallet;
+
     this.state = DefaultAppState;
     this.publicClient = wallet.getPublicClient();
 

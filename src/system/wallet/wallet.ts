@@ -9,7 +9,6 @@ import {
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { liskSepolia, mainnet } from "viem/chains";
 
-import state from "../state";
 import events from "../eventEmmiter";
 
 import storage from "../storage/storage";
@@ -102,60 +101,7 @@ export class WalletModule {
     return privateKey;
   }
 
-  async sendMiningNonce(nonce: string) {
-    if (!this.account) {
-      throw new Error("Wallet not created");
-    }
-
-    if (this.inTransaction) {
-      return;
-    }
-
-    this.inTransaction = true;
-
-    try {
-      const appState = state.getState();
-
-      const canMine = await this.publicClient.readContract({
-        address: appState.contractAddress,
-        abi: abi,
-        functionName: "canMine",
-        args: [this.account.address],
-      });
-
-      if (!canMine) {
-        // Already minted
-        return;
-      }
-
-      const data = encodeFunctionData({
-        abi: abi,
-        functionName: "mine",
-        args: [nonce, [appState.tokenAddress]],
-      });
-
-      const hash = await this.walletClient.sendTransaction({
-        account: this.account,
-        to: appState.contractAddress,
-        value: 0n,
-        data: data,
-        gasLimit: 3_00_000n,
-      });
-
-      const transactionLog =
-        storage.get<Record<string, any>[]>("transactionLog") || [];
-
-      transactionLog.push({ hash: hash, status: "unknown" });
-
-      storage.set<Record<string, any>[]>("transactionLog", transactionLog);
-
-      return hash;
-    } catch (error) {
-      throw error;
-    } finally {
-      this.inTransaction = false;
-    }
-  }
+  async sendMiningNonce(nonce: string) {}
 
   async sendTransaction(to: string, value: bigint) {
     if (!this.account) {
